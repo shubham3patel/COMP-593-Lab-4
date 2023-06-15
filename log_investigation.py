@@ -81,7 +81,17 @@ def generate_source_ip_log(ip_address):
     """
     # TODO: Complete function body per step 11
     # Get all records that have the specified sourec IP address
+    Source_IP_address = log_analysis_lib.filter_log_by_regex(log_path, r'^(.+ \d+) (.{8}.) SRC=(.*?) DST=(.*?) SPT=(.*?) DPT=(.*?) LEN=(.*?) ')[0]
+
+
     # Save all records to a plain text .log file
+    df = pd.DataFrame(Source_IP_address)
+    sub_replacement = re.sub(r'.','_', ip_address)
+    Name_of_textfile = f'source_ip_{sub_replacement}.log'
+    df.to_csv(Name_of_textfile)
+    with open(Name_of_textfile, 'w') as file:
+        for record in Source_IP_address:
+            file.write(record + '\n')
     return
 
 if __name__ == '__main__':
